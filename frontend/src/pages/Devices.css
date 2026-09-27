@@ -1,0 +1,196 @@
+.devices {
+  min-height: 100vh;
+  background-color: var(--light-bg);
+}
+
+.devices-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.devices-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--dark);
+}
+
+.devices-sub {
+  font-size: 14px;
+  color: var(--text-gray);
+  margin-top: 4px;
+  margin-bottom: 24px;
+}
+
+.devices-status-banner {
+  padding: 16px 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.device-meta {
+  display: flex;
+  gap: 20px;
+  font-size: 13px;
+  color: var(--text-gray);
+}
+
+.device-meta strong {
+  color: var(--dark);
+}
+
+/* Pinout Summary Table */
+.pinout-summary {
+  background: var(--white);
+  border: 1px solid var(--cream);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.pinout-summary h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 16px;
+}
+
+.pinout-table-wrap {
+  overflow-x: auto;
+}
+
+.pinout-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.pinout-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--sage);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--cream);
+}
+
+.pinout-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--cream);
+  color: var(--text-dark);
+}
+
+.pinout-table code {
+  background: var(--light-bg);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.pinout-icon {
+  margin-right: 6px;
+}
+
+.pin-type-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.pin-type-badge.type-analog { background: #dbeafe; color: #1d4ed8; }
+.pin-type-badge.type-digital { background: #fef3c7; color: #92400e; }
+.pin-type-badge.type-output { background: #fee2e2; color: #991b1b; }
+.pin-type-badge.type-i2c { background: #e0e7ff; color: #3730a3; }
+
+/* Device Cards Grid */
+.devices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.device-card {
+  background: var(--white);
+  border: 1px solid var(--cream);
+  border-radius: 16px;
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.device-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.device-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.device-icon {
+  font-size: 28px;
+}
+
+.device-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.device-badge.online {
+  background: #d1e8d1;
+  color: #1a4d2e;
+}
+
+.device-badge.offline {
+  background: #f0ece4;
+  color: #99948a;
+}
+
+.device-id {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 2px;
+}
+
+.device-pin {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+
+.device-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-gray);
+  margin-bottom: 6px;
+}
+
+.device-desc {
+  font-size: 12px;
+  color: #aaa;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .devices-grid { grid-template-columns: 1fr; }
+  .devices-status-banner { flex-direction: column; }
+  .device-meta { flex-direction: column; gap: 4px; }
+}

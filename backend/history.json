@@ -1,0 +1,131 @@
+[
+  {
+    "fruit": "Orange",
+    "mq135": 100.0,
+    "mq4": 60.0,
+    "mq3": 70.0,
+    "freshness": "Fresh",
+    "shelf_life_days": 6,
+    "advice": "Fruit is fresh. Safe to consume or store.",
+    "timestamp": "2026-06-05 20:50:34"
+  },
+  {
+    "fruit": "Orange",
+    "mq135": 100.0,
+    "mq4": 60.0,
+    "mq3": 70.0,
+    "freshness": "Fresh",
+    "shelf_life_days": 6,
+    "advice": "Fruit is fresh. Safe to consume or store.",
+    "timestamp": "2026-06-06 17:36:30"
+  },
+  {
+    "fruit": "Orange",
+    "mq135": 100.0,
+    "mq4": 60.0,
+    "mq3": 70.0,
+    "temperature": 15.0,
+    "humidity": 50.0,
+    "freshness": "Fresh",
+    "shelf_life_days": 6,
+    "advice": "Fruit is fresh. Safe to consume or store.",
+    "timestamp": "2026-06-06 22:25:23"
+  },
+  {
+    "fruit": "Lemon",
+    "mq135": 265.0,
+    "mq4": 167.0,
+    "mq3": 199.0,
+    "temperature": 111.0,
+    "humidity": 152.0,
+    "freshness": "Spoiled",
+    "shelf_life_days": 1,
+    "advice": "Fruit is spoiled. Do not consume.",
+    "timestamp": "2026-06-22 21:55:28"
+  },
+  {
+    "fruit": "Orange",
+    "mq135": 120.0,
+    "mq4": 70.0,
+    "mq3": 80.0,
+    "temperature": 22.0,
+    "humidity": 55.0,
+    "freshness": "Fresh",
+    "shelf_life_days": 6,
+    "advice": "Fruit is fresh. Safe to consume or store.",
+    "edible": "edible",
+    "timestamp": "2026-07-05 14:00:21"
+  },
+  {
+    "fruit": "Orange",
+    "mq135": 300.0,
+    "mq4": 200.0,
+    "mq3": 250.0,
+    "temperature": 35.0,
+    "humidity": 80.0,
+    "freshness": "Spoiled",
+    "shelf_life_days": 0,
+    "advice": "Fruit is spoiled. Do not consume.",
+    "timestamp": "2026-07-05 14:00:21"
+  },
+  {
+    "fruit": "Orange",
+    "mq135": 120.0,
+    "mq4": 80.0,
+    "mq3": 100.0,
+    "temperature": 25.0,
+    "humidity": 60.0,
+    "freshness": "Fresh",
+    "shelf_life_days": 5,
+    "advice": "Fruit is fresh. Safe to consume or store.",
+    "timestamp": "2026-07-07 20:07:59"
+  },
+  {
+    "fruit": "Orange",
+    "mq135": 184.0,
+    "mq4": 252.0,
+    "mq3": 153.0,
+    "temperature": 108.0,
+    "humidity": 67.0,
+    "freshness": "Medium",
+    "shelf_life_days": 2,
+    "advice": "Fruit is aging. Use soon or refrigerate.",
+    "timestamp": "2026-07-07 20:18:50"
+  },
+  {
+    "fruit": "Orange",
+    "mq135": 184.0,
+    "mq4": 252.0,
+    "mq3": 153.0,
+    "temperature": 108.0,
+    "humidity": 67.0,
+    "freshness": "Medium",
+    "shelf_life_days": 2,
+    "advice": "Fruit is aging. Use soon or refrigerate.",
+    "timestamp": "2026-07-07 20:23:00"
+  },
+  {
+    "fruit": "Orange",
+    "mq135": 120.0,
+    "mq4": 80.0,
+    "mq3": 70.0,
+    "temperature": 27.0,
+    "humidity": 60.0,
+    "freshness": "Fresh",
+    "shelf_life_days": 6,
+    "advice": "Fruit is fresh. Safe to consume or store.",
+    "timestamp": "2026-09-27 13:56:26"
+  },
+  {
+    "fruit": "Orange",
+    "mq135": 35.0,
+    "mq4": 80.0,
+    "mq3": 22.0,
+    "temperature": 13.0,
+    "humidity": 40.0,
+    "freshness": "Fresh",
+    "shelf_life_days": 6,
+    "advice": "Fruit is fresh. Safe to consume or store.",
+    "timestamp": "2026-09-27 14:01:16"
+  }
+]
