@@ -1,8 +1,8 @@
 import Navbar from "../components/Navbar"
 import { useEffect, useState, useRef } from "react"
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts"
-import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore"
-import { db } from "../firebase"
+import { ref, onValue } from "firebase/database"
+import { rtdb } from "../firebase"
 import "./LiveMonitor.css"
 
 const PINOUT = [
@@ -23,43 +23,51 @@ function LiveMonitor() {
   const [pulseKey, setPulseKey] = useState(0)
   const prevTimestamp = useRef(null)
 
-  useEffect(() => {
-    // Firestore real-time listener for the last 20 readings
-    const q = query(collection(db, "live_readings"), orderBy("timestamp", "desc"), limit(20));
-    
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const readings = [];
-      snapshot.forEach((doc) => {
-        readings.push(doc.data());
-      });
-      
-      if (readings.length > 0) {
-        const latest = readings[0]; // Most recent reading
-        setLiveData(latest);
+  
+useEffect(() => {
+  const currentRef = ref(rtdb, "live_readings/current");
+
+  const unsubscribe = onValue(
+    currentRef,
+    (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+
+        setLiveData(data);
         setConnected(true);
-        
-        if (latest.timestamp !== prevTimestamp.current) {
-          setPulseKey(k => k + 1);
-          prevTimestamp.current = latest.timestamp;
-        }
 
-        // Reverse to show oldest to newest on the chart
-        setTrendData(readings.reverse().map((r, i) => ({
-          index: i + 1,
-          MQ135: r.mq135,
-          MQ4: r.mq4,
-          MQ3: r.mq3,
-          Temp: r.temperature,
-          Humidity: r.humidity,
-        })));
+        setTrendData((previous) => {
+          const next = [
+            ...previous,
+            {
+              index: previous.length + 1,
+              MQ135: Number(data.mq135 ?? 0),
+              MQ4: Number(data.mq4 ?? 0),
+              MQ3: Number(data.mq3 ?? 0),
+              Temp: Number(data.temperature ?? 0),
+              Humidity: Number(data.humidity ?? 0),
+            },
+          ];
+
+          return next.slice(-20);
+        });
+
+        setPulseKey((key) => key + 1);
+      } else {
+        setLiveData(null);
+        setConnected(false);
+        setTrendData([]);
       }
-    }, (error) => {
-      console.warn("Firebase listener error (is your config set?):", error);
+    },
+    (error) => {
+      console.error("Realtime Database error:", error);
       setConnected(false);
-    });
+    }
+  );
 
-    return () => unsubscribe();
-  }, [])
+  return () => unsubscribe();
+}, []);
+
 
   const getEdibilityDisplay = (freshness) => {
     if (freshness === "Fresh") return { icon: "✅", label: "EDIBLE", desc: "Safe to eat or store", cls: "verdict-fresh" }
