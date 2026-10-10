@@ -86,15 +86,26 @@ const handlePredict = async () => {
 
     const data = await predictFreshness(sensorData);
 
-    // 2. Display the prediction on the dashboard
-    setResult(data);
+    ```jsx
+// 2. Display the prediction on the dashboard
+setResult(data);
 
-    weekData[6].score =
-      data.freshness === "Fresh"
-        ? 90
-        : data.freshness === "Medium"
-        ? 50
-        : 15;
+const newScore =
+  data.freshness === "Fresh"
+    ? 90
+    : data.freshness === "Medium"
+    ? 50
+    : 15;
+
+// Create a new array without modifying the original objects
+setWeekData((prevWeekData) =>
+  prevWeekData.map((item, index) =>
+    index === 6
+      ? { ...item, score: newScore }
+      : item
+  )
+);
+```
 
     // 3. Save sensor readings and prediction to Firestore
     try {
