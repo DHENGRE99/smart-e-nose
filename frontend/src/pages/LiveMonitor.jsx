@@ -24,48 +24,63 @@ function LiveMonitor() {
   const prevTimestamp = useRef(null)
 
   
+
 useEffect(() => {
   const currentRef = ref(rtdb, "live_readings/current");
+  const historyRef = ref(rtdb, "live_readings/history");
 
-  const unsubscribe = onValue(
+  let currentData = null;
+  let historyData = [];
+
+  const updateDisplay = () => {
+    if (currentData) {
+      setLiveData(currentData);
+      setConnected(true);
+    }
+
+    setTrendData(
+      historyData
+        .sort((a, b) => Number(a.timestamp) - Number(b.timestamp))
+        .map((item, index) => ({
+          index: index + 1,
+          MQ135: Number(item.mq135 ?? 0),
+          MQ4: Number(item.mq4 ?? 0),
+          MQ3: Number(item.mq3 ?? 0),
+          Temp: Number(item.temperature ?? 0),
+          Humidity: Number(item.humidity ?? 0),
+        }))
+    );
+  };
+
+  const stopCurrent = onValue(
     currentRef,
     (snapshot) => {
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-
-        setLiveData(data);
-        setConnected(true);
-
-        setTrendData((previous) => {
-          const next = [
-            ...previous,
-            {
-              index: previous.length + 1,
-              MQ135: Number(data.mq135 ?? 0),
-              MQ4: Number(data.mq4 ?? 0),
-              MQ3: Number(data.mq3 ?? 0),
-              Temp: Number(data.temperature ?? 0),
-              Humidity: Number(data.humidity ?? 0),
-            },
-          ];
-
-          return next.slice(-20);
-        });
-
-        setPulseKey((key) => key + 1);
-      } else {
-        setLiveData(null);
-        setConnected(false);
-        setTrendData([]);
-      }
+      currentData = snapshot.exists() ? snapshot.val() : null;
+      updateDisplay();
     },
     (error) => {
-      console.error("Realtime Database error:", error);
+      console.error("Current reading error:", error);
       setConnected(false);
     }
   );
 
-  return () => unsubscribe();
+  const stopHistory = onValue(
+    historyRef,
+    (snapshot) => {
+      historyData = snapshot.exists()
+        ? Object.values(snapshot.val())
+        : [];
+      updateDisplay();
+    },
+    (error) => {
+      console.error("History reading error:", error);
+    }
+  );
+
+  return () => {
+    stopCurrent();
+    stopHistory();
+  };
 }, []);
 
 
