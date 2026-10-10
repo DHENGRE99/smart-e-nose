@@ -2,7 +2,15 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
 import { predictFreshness } from "../services/api"
-import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore"
+import {
+  collection,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+  addDoc,
+  serverTimestamp
+} from "firebase/firestore";
 import { db } from "../firebase"
 import "./Dashboard.css"
 
@@ -61,24 +69,57 @@ function Dashboard() {
     // Initial check will be handled when switching to hardware mode
   }, [])
 
-  const handlePredict = async () => {
-    setLoading(true)
+  
+const handlePredict = async () => {
+  setLoading(true);
+
+  try {
+    // 1. Send sensor readings to your Flask ML backend
+    const sensorData = {
+      mq135: parseFloat(sensors.mq135),
+      mq4: parseFloat(sensors.mq4),
+      mq3: parseFloat(sensors.mq3),
+      temperature: parseFloat(sensors.temperature),
+      humidity: parseFloat(sensors.humidity),
+      fruit: fruit
+    };
+
+    const data = await predictFreshness(sensorData);
+
+    // 2. Display the prediction on the dashboard
+    setResult(data);
+
+    weekData[6].score =
+      data.freshness === "Fresh"
+        ? 90
+        : data.freshness === "Medium"
+        ? 50
+        : 15;
+
+    // 3. Save sensor readings and prediction to Firestore
     try {
-      const data = await predictFreshness({
-        mq135: parseFloat(sensors.mq135),
-        mq4: parseFloat(sensors.mq4),
-        mq3: parseFloat(sensors.mq3),
-        temperature: parseFloat(sensors.temperature),
-        humidity: parseFloat(sensors.humidity),
-        fruit: fruit
-      })
-      setResult(data)
-      weekData[6].score = data.freshness === "Fresh" ? 90 : data.freshness === "Medium" ? 50 : 15
-    } catch (error) {
-      alert("Error connecting to backend. Make sure Flask is running!")
+      await addDoc(collection(db, "analysis_history"), {
+        ...sensorData,
+        freshness: data.freshness,
+        shelf_life_days: data.shelf_life_days,
+        advice: data.advice,
+        timestamp: serverTimestamp()
+      });
+
+      console.log("Sensor readings saved to Firebase Firestore");
+    } catch (firebaseError) {
+      console.error("Firebase save failed:", firebaseError);
+      alert(
+        "Prediction completed, but saving to Firebase failed. Check Firebase security rules."
+      );
     }
-    setLoading(false)
+  } catch (error) {
+    console.error("Prediction error:", error);
+    alert("Could not get a prediction from the backend. Check the browser Console for details.");
+  } finally {
+    setLoading(false);
   }
+};
 
   const getBarWidth = (value, max) => Math.min((value / max) * 100, 100)
 
